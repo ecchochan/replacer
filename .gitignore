@@ -1,0 +1,12 @@
+*.html
+*.c
+*.cpp
+*.h
+*.so
+*.html
+test*
+build/*
+**/__pycache__/*
+*.egg-info/*
+.ipynb_checkpoints
+dist*
