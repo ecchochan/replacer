@@ -254,17 +254,18 @@ class Replacer():
                     I = i
 
                     i = i + 1
-                    C = texts[i]
-                    this, end, _regx = exceptions_after
-                    while C in this:
-                        this, end, _regx = this[C]
-                        if end:
-                            abort = True
-                            break
-                        i = pos + 1
-                        if i < 0:
-                            break
+                    if i <= max_length:
                         C = texts[i]
+                        this, end, _regx = exceptions_after
+                        while C in this:
+                            this, end, _regx = this[C]
+                            if end:
+                                abort = True
+                                break
+                            i = pos + 1
+                            if i > max_length:
+                                break
+                            C = texts[i]
 
                     if abort:
                         i = I + 1
@@ -274,17 +275,18 @@ class Replacer():
                         continue
 
                     i = pos - 1
-                    C = texts[i]
-                    this, end, _regx = exceptions_before
-                    while C in this:
-                        this, end, _regx = this[C]
-                        if end:
-                            abort = True
-                            break
-                        i = pos - 1
-                        if i < 0:
-                            break
+                    if i >= 0:
                         C = texts[i]
+                        this, end, _regx = exceptions_before
+                        while C in this:
+                            this, end, _regx = this[C]
+                            if end:
+                                abort = True
+                                break
+                            i = pos - 1
+                            if i < 0:
+                                break
+                            C = texts[i]
 
 
 
