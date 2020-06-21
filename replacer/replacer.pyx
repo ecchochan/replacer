@@ -128,6 +128,7 @@ class Replacer():
     def translate(self, text):
         cdef int pos, max_length, min_length, i, I, L, LL, u, U, n, l, j, lvl, REPL_pos = -1
         cdef bint ok = False, abort
+        cdef str c
                           
         mapping_single = self.mapping_single
         text = text + ' '
@@ -137,7 +138,7 @@ class Replacer():
         pos = -1
         last_char = None
         last_char2 = None
-        texts = list(text)
+        texts = text
         max_length = len(text) - 1
 
 
