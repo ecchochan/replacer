@@ -1,4 +1,4 @@
-from .replacer import Replacer
+from replacer.replacer import Replacer
 
 
 __all__ = [
