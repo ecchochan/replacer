@@ -50,9 +50,9 @@ class Replacer():
                     i = 1
                     bucket = []
                     for seg in splitted[j:]:
+                        i += 1
                         if not seg:
                             continue
-                        i += 1
                         if i%2 == 1:
                             for s in seg:
                                 bucket.append((MODE_CHAR, s,))
