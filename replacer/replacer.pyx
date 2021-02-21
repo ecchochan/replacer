@@ -71,6 +71,7 @@ class Replacer():
                     else:
                         this[0][c] = this[0][c][:2] + (this[0][c][2]+(regx,),)
                 else:
+                    c = temp[len(temp)-1]
                     mapping_single = mapping_single[0][c][:2] + (mapping_single[0][c][2]+(regx,),)
 
 
