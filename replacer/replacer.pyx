@@ -94,6 +94,7 @@ class Replacer():
 
 
                     if temp:
+                        this = mapping_single
                         for c in temp[:len(temp)-1]:
                             if c not in this[0]:
                                 this[0][c] = this = ({}, None, ())
