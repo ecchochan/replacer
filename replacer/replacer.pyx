@@ -27,9 +27,9 @@ class Replacer():
                 j = 1
                 temp = splitted[0]
                 if temp:
-                    temp = [temp]
+                    temp2 = [temp]
                 else:
-                    temp = []
+                    temp2 = []
                     while j-1 < len_splitted:
                         j += 1
                         seg = splitted[j - 1]
@@ -51,12 +51,15 @@ class Replacer():
                             seg = '|'.join((str(_) for _ in range(a, b+1)))
 
                         # DUPLICATED CODE COPIED FROM BELOW -->
-                        temp.extend(seg.split('|'))
+                        temp2.extend(seg.split('|'))
                         if not optional:
                             break
                     
-                for temp in temp:
-                    i = 1
+                for temp in temp2:
+                    i = 0
+
+                    if not temp:
+                        continue
                     bucket = []
                     if j < len_splitted:
                         for seg in splitted[j:]:
@@ -92,21 +95,19 @@ class Replacer():
 
                     regx = (bucket, v)
 
-
-                    if temp:
-                        this = mapping_single
-                        for c in temp[:len(temp)-1]:
-                            if c not in this[0]:
-                                this[0][c] = this = ({}, None, ())
-                            else:
-                                this = this[0][c]
-
-                        c = temp[len(temp)-1]
-
+                    this = mapping_single
+                    for c in temp[:len(temp)-1]:
                         if c not in this[0]:
-                            this[0][c] = ({}, None, (regx,))
+                            this[0][c] = this = ({}, None, ())
                         else:
-                            this[0][c] = this[0][c][:2] + (this[0][c][2]+(regx,),)
+                            this = this[0][c]
+
+                    c = temp[len(temp)-1]
+
+                    if c not in this[0]:
+                        this[0][c] = ({}, None, (regx,))
+                    else:
+                        this[0][c] = this[0][c][:2] + (this[0][c][2]+(regx,),)
 
 
                 continue
