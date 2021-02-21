@@ -23,7 +23,6 @@ class Replacer():
 
                 splitted = re.split(r'\[(.*?)\]', k)
 
-                i = 1
                 j = 1
                 temp = splitted[0]
                 if temp:
@@ -48,6 +47,7 @@ class Replacer():
                     temp = seg.split('|')
                     
                 for temp in temp:
+                    i = 1
                     bucket = []
                     for seg in splitted[j:]:
                         i += 1
