@@ -29,7 +29,7 @@ class Replacer():
                     temp = [temp]
                 else:
                     temp = []
-                    while j <= len(splitted):
+                    while j-1 < len(splitted):
                         j += 1
                         seg = splitted[j - 1]
 
