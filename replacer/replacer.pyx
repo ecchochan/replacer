@@ -12,7 +12,7 @@ SUB_SYMBOLS = tuple(['\\%s'%(i+1) for i in range(MAX_SUB)])
 
 class Replacer():
     def __init__(self, mapping_wf_exception):
-        cdef int i, j
+        cdef int i, j, len_splitted
         cdef bint optional
         
         mapping_single = ({}, False, ())
@@ -23,21 +23,26 @@ class Replacer():
 
                 splitted = re.split(r'\[(.*?)\]', k)
 
+                len_splitted = len(splitted)
                 j = 1
                 temp = splitted[0]
                 if temp:
                     temp = [temp]
                 else:
                     temp = []
-                    while j-1 < len(splitted):
+                    while j-1 < len_splitted:
                         j += 1
                         seg = splitted[j - 1]
+                        if not seg:
+                            continue
 
                         # <-- DUPLICATED CODE COPIED FROM BELOW
                         optional = seg.endswith('?')
                         if optional:
                             seg = seg[:len(seg)-1]
-
+                        if not seg:
+                            continue
+                            
                         digit_range = re.search(r'(\d)\-(\d)', seg)
 
                         if digit_range:
@@ -53,7 +58,7 @@ class Replacer():
                 for temp in temp:
                     i = 1
                     bucket = []
-                    if j < len(splitted):
+                    if j < len_splitted:
                         for seg in splitted[j:]:
                             i += 1
                             if not seg:
@@ -65,6 +70,8 @@ class Replacer():
                                 optional = seg.endswith('?')
                                 if optional:
                                     seg = seg[:len(seg)-1]
+                                if not seg:
+                                    continue
 
                                 digit_range = re.search(r'(\d)\-(\d)', seg)
 
