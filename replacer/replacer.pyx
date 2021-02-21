@@ -20,7 +20,6 @@ class Replacer():
         for k, v in mapping_wf_exception.items():
             this = mapping_single
             if re.search(r'\[(.*?)\]', k):
-                bucket = []
 
                 splitted = re.split(r'\[(.*?)\]', k)
 
@@ -49,6 +48,7 @@ class Replacer():
                     temp = seg.split('|')
                     
                 for temp in temp:
+                    bucket = []
                     for seg in splitted[j:]:
                         i += 1
                         if i%2 == 1:
