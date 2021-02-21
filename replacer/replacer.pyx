@@ -28,55 +28,60 @@ class Replacer():
                 if temp:
                     temp = [temp]
                 else:
-                    j = 2
-                    seg = splitted[1]
+                    temp = []
+                    while j <= len(splitted):
+                        j += 1
+                        seg = splitted[j - 1]
 
-                    # <-- DUPLICATED CODE COPIED FROM BELOW
-                    optional = seg.endswith('?')
-                    if optional:
-                        seg = seg[:len(seg)-1]
+                        # <-- DUPLICATED CODE COPIED FROM BELOW
+                        optional = seg.endswith('?')
+                        if optional:
+                            seg = seg[:len(seg)-1]
 
-                    digit_range = re.search(r'(\d)\-(\d)', seg)
+                        digit_range = re.search(r'(\d)\-(\d)', seg)
 
-                    if digit_range:
-                        a = int(digit_range.group(1))
-                        b = int(digit_range.group(2))
-                        seg = '|'.join((str(_) for _ in range(a, b+1)))
+                        if digit_range:
+                            a = int(digit_range.group(1))
+                            b = int(digit_range.group(2))
+                            seg = '|'.join((str(_) for _ in range(a, b+1)))
 
-                    # DUPLICATED CODE COPIED FROM BELOW -->
-                    temp = seg.split('|')
+                        # DUPLICATED CODE COPIED FROM BELOW -->
+                        temp.extend(seg.split('|'))
+                        if not optional:
+                            continue
                     
                 for temp in temp:
                     i = 1
                     bucket = []
-                    for seg in splitted[j:]:
-                        i += 1
-                        if not seg:
-                            continue
-                        if i%2 == 1:
-                            for s in seg:
-                                bucket.append((MODE_CHAR, s,))
-                        else:
-                            optional = seg.endswith('?')
-                            if optional:
-                                seg = seg[:len(seg)-1]
+                    if j < len(splitted):
+                        for seg in splitted[j:]:
+                            i += 1
+                            if not seg:
+                                continue
+                            if i%2 == 1:
+                                for s in seg:
+                                    bucket.append((MODE_CHAR, s,))
+                            else:
+                                optional = seg.endswith('?')
+                                if optional:
+                                    seg = seg[:len(seg)-1]
 
-                            digit_range = re.search(r'(\d)\-(\d)', seg)
+                                digit_range = re.search(r'(\d)\-(\d)', seg)
 
-                            if digit_range:
-                                a = int(digit_range.group(1))
-                                b = int(digit_range.group(2))
-                                seg = '|'.join((str(_) for _ in range(a, b+1)))
+                                if digit_range:
+                                    a = int(digit_range.group(1))
+                                    b = int(digit_range.group(2))
+                                    seg = '|'.join((str(_) for _ in range(a, b+1)))
 
-                            se = {}
-                            for e in seg.split('|'):
-                                if e[0] not in se:
-                                    se[e[0]] = []
+                                se = {}
+                                for e in seg.split('|'):
+                                    if e[0] not in se:
+                                        se[e[0]] = []
 
-                                se[e[0]].append(e[1:] or None)
+                                    se[e[0]].append(e[1:] or None)
 
 
-                            bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se,))
+                                bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se,))
 
                     regx = (bucket, v)
 
