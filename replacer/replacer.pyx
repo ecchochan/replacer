@@ -12,7 +12,7 @@ SUB_SYMBOLS = tuple(['\\%s'%(i+1) for i in range(MAX_SUB)])
 
 class Replacer():
     def __init__(self, mapping_wf_exception):
-        cdef int i
+        cdef int i, j
         cdef bint optional
         
         mapping_single = ({}, False, ())
@@ -25,51 +25,73 @@ class Replacer():
                 splitted = re.split(r'\[(.*?)\]', k)
 
                 i = 1
-                for seg in splitted[1:]:
-                    i += 1
-                    if i%2 == 1:
-                        for s in seg:
-                            bucket.append((MODE_CHAR, s,))
-                    else:
-                        optional = seg.endswith('?')
-                        if optional:
-                            seg = seg[:len(seg)-1]
-
-                        digit_range = re.search(r'(\d)\-(\d)', seg)
-
-                        if digit_range:
-                            a = int(digit_range.group(1))
-                            b = int(digit_range.group(2))
-                            seg = '|'.join((str(_) for _ in range(a, b+1)))
-
-                        se = {}
-                        for e in seg.split('|'):
-                            if e[0] not in se:
-                                se[e[0]] = []
-
-
-                            se[e[0]].append(e[1:] or None)
-
-
-                        bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se,))
-
-                regx = (bucket, v)
-                
+                j = 1
                 temp = splitted[0]
-
                 if temp:
-                    for c in temp[:len(temp)-1]:
-                        if c not in this[0]:
-                            this[0][c] = this = ({}, None, ())
+                    temp = [temp]
+                else:
+                    j = 2
+                    seg = splitted[1]
+
+                    # <-- DUPLICATED CODE COPIED FROM BELOW
+                    optional = seg.endswith('?')
+                    if optional:
+                        seg = seg[:len(seg)-1]
+
+                    digit_range = re.search(r'(\d)\-(\d)', seg)
+
+                    if digit_range:
+                        a = int(digit_range.group(1))
+                        b = int(digit_range.group(2))
+                        seg = '|'.join((str(_) for _ in range(a, b+1)))
+
+                    # DUPLICATED CODE COPIED FROM BELOW -->
+                    temp = seg.split('|')
+                    
+                for temp in temp:
+                    for seg in splitted[j:]:
+                        i += 1
+                        if i%2 == 1:
+                            for s in seg:
+                                bucket.append((MODE_CHAR, s,))
                         else:
-                            this = this[0][c]
+                            optional = seg.endswith('?')
+                            if optional:
+                                seg = seg[:len(seg)-1]
 
-                    c = temp[len(temp)-1]
+                            digit_range = re.search(r'(\d)\-(\d)', seg)
 
-                    if c not in this[0]:
-                        this[0][c] = ({}, None, (regx,))
-                    else:
-                        this[0][c] = this[0][c][:2] + (this[0][c][2]+(regx,),)
+                            if digit_range:
+                                a = int(digit_range.group(1))
+                                b = int(digit_range.group(2))
+                                seg = '|'.join((str(_) for _ in range(a, b+1)))
+
+                            se = {}
+                            for e in seg.split('|'):
+                                if e[0] not in se:
+                                    se[e[0]] = []
+
+                                se[e[0]].append(e[1:] or None)
+
+
+                            bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se,))
+
+                    regx = (bucket, v)
+
+
+                    if temp:
+                        for c in temp[:len(temp)-1]:
+                            if c not in this[0]:
+                                this[0][c] = this = ({}, None, ())
+                            else:
+                                this = this[0][c]
+
+                        c = temp[len(temp)-1]
+
+                        if c not in this[0]:
+                            this[0][c] = ({}, None, (regx,))
+                        else:
+                            this[0][c] = this[0][c][:2] + (this[0][c][2]+(regx,),)
 
 
                 continue
