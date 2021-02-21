@@ -50,6 +50,8 @@ class Replacer():
                     i = 1
                     bucket = []
                     for seg in splitted[j:]:
+                        if not seg:
+                            continue
                         i += 1
                         if i%2 == 1:
                             for s in seg:
