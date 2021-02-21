@@ -48,7 +48,7 @@ class Replacer():
                         # DUPLICATED CODE COPIED FROM BELOW -->
                         temp.extend(seg.split('|'))
                         if not optional:
-                            continue
+                            break
                     
                 for temp in temp:
                     i = 1
