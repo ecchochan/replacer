@@ -180,9 +180,7 @@ class Replacer():
         while pos < max_length:
             pos += 1
             c = texts[pos]
-            if not c.strip():
-                bucket.append(c)
-                continue
+            
             last_char
 
             repl_found = False
