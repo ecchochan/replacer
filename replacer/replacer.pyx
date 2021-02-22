@@ -56,7 +56,7 @@ class Replacer():
                             break
                     
                 for temp in temp2:
-                    i = 0
+                    i = j
 
                     if not temp:
                         continue
