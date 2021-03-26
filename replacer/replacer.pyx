@@ -378,7 +378,7 @@ class Replacer():
 
             if REPL is not None:
                 if '\\0' in REPL:
-                    REPL = REPL.replace('\\0', texts[pos:REPL_pos+1])
+                    REPL = REPL.replace('\\0', "".join(texts[pos:REPL_pos+1]))
                 bucket.append(REPL)
                 pos = REPL_pos
 
