@@ -510,13 +510,10 @@ class Replacer():
 
                             l = len(_repl)
                             # if l > L:
-                            matched = callback(_repl)
-                            if matched is None:
-                                raise Exception('callback should return True or False')
-                            elif matched == True:
-                                L = l
-                                REPL = _repl
-                                REPL_pos = i - 1
+                            L = l
+                            REPL = matched
+                            REPL_pos = i - 1
+                                
 
                     if REPL is None:
                         i = I
@@ -623,6 +620,20 @@ class Replacer():
                 C = texts[i]
 
             if REPL is not None:
+                
+
+                matched = callback(REPL)
+                if matched is None:
+                    raise Exception('callback should return True or None')
+                elif matched == True:
+                    pass
+                elif matched == False:
+                    bucket.append(c)
+                    continue
+                else:
+                    REPL = matched
+                
+                
                 if '\\0' in REPL:
                     REPL = REPL.replace('\\0', "".join(texts[pos:REPL_pos+1]))
                 bucket.append(REPL)
