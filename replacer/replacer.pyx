@@ -9,6 +9,7 @@ cdef int MODE_ENUM     = 1
 cdef int MODE_ENUM_OPT = 2
 cdef int MAX_SUB       = 100
 SUB_SYMBOLS = tuple(['\\%s'%(i+1) for i in range(MAX_SUB)])
+SUB_ALL_SYMBOL = '\\a'
 
 class Replacer():
     def __init__(self, mapping_wf_exception):
@@ -265,6 +266,10 @@ class Replacer():
                                 if ss not in _repl:
                                     break
                                 _repl = _repl.replace(ss, sub[n])
+                                
+                            if '\\' in _repl:
+                                if '\\a' in _repl:
+                                    _repl = _repl.replace(SUB_ALL_SYMBOL, ','.join(sub))
 
                             l = len(_repl)
                             if l > L:
