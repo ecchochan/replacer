@@ -267,7 +267,9 @@ class Replacer():
                                     break
                                 _repl = _repl.replace(ss, sub[n])
                                 
+                            print(">>", _repl)
                             if '\\' in _repl:
+                                
                                 if SUB_ALL_SYMBOL in _repl:
                                     _repl = _repl.replace(SUB_ALL_SYMBOL, ','.join(sub))
 
