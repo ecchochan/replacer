@@ -647,9 +647,7 @@ class Replacer():
                 C = texts[i]
 
             if REPL is not None:
-                
-
-                matched = callback(REPL)
+                matched = callback(REPL, REPLs)
                 if matched is None:
                     raise Exception('callback should return True or None')
                 elif matched == True:
@@ -660,7 +658,7 @@ class Replacer():
                     if len(REPLs) > 0:
                         for j in range(len(REPLs), 0, -1):
                             REPL, REPL_pos = REPLs[j - 1]
-                            matched = callback(REPL)
+                            matched = callback(REPL, REPLs)
                             if matched is None:
                                 raise Exception('callback should return True or None')
                             elif matched == True:
