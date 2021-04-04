@@ -268,14 +268,14 @@ class Replacer():
                                 _repl = _repl.replace(ss, sub[n])
                                 
                             if '\\' in _repl:
-                                if '\\a' in _repl:
+                                if SUB_ALL_SYMBOL in _repl:
                                     _repl = _repl.replace(SUB_ALL_SYMBOL, ','.join(sub))
 
                             l = len(_repl)
-                            if l > L:
-                                L = l
-                                REPL = _repl
-                                REPL_pos = i - 1
+                            # if l > L:
+                            L = l
+                            REPL = _repl
+                            REPL_pos = i - 1
 
                     if REPL is None:
                         i = I
@@ -503,6 +503,10 @@ class Replacer():
                                     break
                                 _repl = _repl.replace(ss, sub[n])
 
+                            if '\\' in _repl:
+                                if SUB_ALL_SYMBOL in _repl:
+                                    _repl = _repl.replace(SUB_ALL_SYMBOL, ','.join(sub))
+                                    
                             l = len(_repl)
                             if l > L:
                                 L = l
