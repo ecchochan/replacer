@@ -200,7 +200,9 @@ class Replacer():
             i = pos
             C = c
             mapping = mapping_single
+            REPLs = []
             REPL = None
+            REPL_pos = None
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
@@ -288,6 +290,8 @@ class Replacer():
                             l = len(_repl)
                             # if l > L:
                             L = l
+                            if REPL is not None:
+                                REPLs.append((REPL, REPL_pos))
                             REPL = _repl
                             REPL_pos = i - 1
 
@@ -384,6 +388,8 @@ class Replacer():
                         continue
 
 
+                    if REPL is not None:
+                        REPLs.append((REPL, REPL_pos))
                     REPL = repl
                     REPL_pos = I
 
@@ -440,7 +446,9 @@ class Replacer():
             i = pos
             C = c
             mapping = mapping_single
+            REPLs = []
             REPL = None
+            REPL_pos = None
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
@@ -528,6 +536,8 @@ class Replacer():
                             l = len(_repl)
                             # if l > L:
                             L = l
+                            if REPL is not None:
+                                REPLs.append((REPL, REPL_pos))
                             REPL = _repl
                             REPL_pos = i - 1
                                 
@@ -625,6 +635,8 @@ class Replacer():
                         continue
 
 
+                    if REPL is not None:
+                        REPLs.append((REPL, REPL_pos))
                     REPL = repl
                     REPL_pos = I
 
@@ -645,8 +657,28 @@ class Replacer():
                 elif matched == True:
                     pass
                 elif matched == False:
-                    bucket.append(c)
-                    continue
+                    
+                    if len(REPLs) > 0:
+                        abort = True
+                        for j in range(len(REPLs), 0, -1):
+                            REPL, REPL_pos = REPLs[j]
+                            matched = callback(REPL)
+                            if matched is None:
+                                raise Exception('callback should return True or None')
+                            elif matched == True:
+                                abort = False
+                                break
+                            elif matched == False:
+                                continue
+                            else:
+                                abort = False
+                                REPL = matched
+                                break
+                                
+                                
+                    if abort:
+                        bucket.append(c)
+                        continue
                 else:
                     REPL = matched
                 
@@ -694,7 +726,9 @@ class Replacer():
             i = pos
             C = c
             mapping = mapping_single
+            REPLs = []
             REPL = None
+            REPL_pos = None
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
@@ -782,6 +816,8 @@ class Replacer():
                             l = len(_repl)
                             if l > L:
                                 L = l
+                                if REPL is not None:
+                                    REPLs.append((REPL, REPL_pos))
                                 REPL = _repl
                                 REPL_pos = i - 1
 
@@ -877,6 +913,8 @@ class Replacer():
                         C = texts[i]
                         continue
 
+                    if REPL is not None:
+                        REPLs.append((REPL, REPL_pos))
 
                     REPL = repl
                     REPL_pos = I
