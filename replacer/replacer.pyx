@@ -655,9 +655,9 @@ class Replacer():
                 elif matched == True:
                     pass
                 elif matched == False:
-                    
+
+                    abort = True
                     if len(REPLs) > 0:
-                        abort = True
                         for j in range(len(REPLs), 0, -1):
                             REPL, REPL_pos = REPLs[j]
                             matched = callback(REPL)
