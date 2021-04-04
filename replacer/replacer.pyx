@@ -491,13 +491,16 @@ class Replacer():
 
                                     if CON:
                                         #print('>>', CON)
-                                        sub.append(CON)
+                                        if is_group:
+                                            sub.append(CON)
                                         i = U - 1
                                     else:
-                                        sub.append('')
+                                        if is_group:
+                                            sub.append('')
 
                                 elif mode == MODE_ENUM_OPT:
-                                    sub.append('')
+                                    if is_group:
+                                        sub.append('')
                                     ok = True
                                     continue
 
@@ -742,13 +745,16 @@ class Replacer():
 
                                     if CON:
                                         #print('>>', CON)
-                                        sub.append(CON)
+                                        if is_group:
+                                            sub.append(CON)
                                         i = U - 1
                                     else:
-                                        sub.append('')
+                                        if is_group:
+                                            sub.append('')
 
                                 elif mode == MODE_ENUM_OPT:
-                                    sub.append('')
+                                    if is_group:
+                                        sub.append('')
                                     ok = True
                                     continue
 
