@@ -251,7 +251,8 @@ class Replacer():
 
                                     if CON:
                                         #print('>>', CON)
-                                        sub.append(CON)
+                                        if is_group:
+                                            sub.append(CON)
                                         i = U - 1
                                     else:
                                         if is_group:
