@@ -38,9 +38,15 @@ class Replacer():
                             continue
 
                         # <-- DUPLICATED CODE COPIED FROM BELOW
+                            
+                        is_group = seg.endswith('*')
+                        if is_group:
+                            seg = seg[:len(seg)-1]
+                            
                         optional = seg.endswith('?')
                         if optional:
                             seg = seg[:len(seg)-1]
+                            
                         if not seg:
                             continue
                             
@@ -69,8 +75,13 @@ class Replacer():
                                 continue
                             if i%2 == 1:
                                 for s in seg:
-                                    bucket.append((MODE_CHAR, s,))
+                                    bucket.append((MODE_CHAR, s, False))
                             else:
+                            
+                                is_group = seg.endswith('*')
+                                if is_group:
+                                    seg = seg[:len(seg)-1]
+
                                 optional = seg.endswith('?')
                                 if optional:
                                     seg = seg[:len(seg)-1]
@@ -92,7 +103,7 @@ class Replacer():
                                     se[e[0]].append(e[1:] or None)
 
 
-                                bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se,))
+                                bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se, is_group))
 
                     regx = (bucket, v)
 
@@ -203,7 +214,7 @@ class Replacer():
                         i = I + 1
                         sub = []
                         C = texts[i]
-                        for mode, compare in rs:
+                        for mode, compare, is_group in rs:
                             ok = False
                             #print('::', '[%s]'%mode, C, compare, )
                             if mode == MODE_CHAR:
@@ -243,10 +254,12 @@ class Replacer():
                                         sub.append(CON)
                                         i = U - 1
                                     else:
-                                        sub.append('')
+                                        if is_group:
+                                            sub.append('')
 
                                 elif mode == MODE_ENUM_OPT:
-                                    sub.append('')
+                                    if is_group:
+                                        sub.append('')
                                     ok = True
                                     continue
 
@@ -440,7 +453,7 @@ class Replacer():
                         i = I + 1
                         sub = []
                         C = texts[i]
-                        for mode, compare in rs:
+                        for mode, compare, is_group in rs:
                             ok = False
                             #print('::', '[%s]'%mode, C, compare, )
                             if mode == MODE_CHAR:
@@ -691,7 +704,7 @@ class Replacer():
                         i = I + 1
                         sub = []
                         C = texts[i]
-                        for mode, compare in rs:
+                        for mode, compare, is_group in rs:
                             ok = False
                             #print('::', '[%s]'%mode, C, compare, )
                             if mode == MODE_CHAR:
