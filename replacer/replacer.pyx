@@ -511,7 +511,7 @@ class Replacer():
                             l = len(_repl)
                             # if l > L:
                             L = l
-                            REPL = matched
+                            REPL = _repl
                             REPL_pos = i - 1
                                 
 
