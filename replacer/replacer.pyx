@@ -398,6 +398,247 @@ class Replacer():
     
     # below is just copy haha
                 
+                
+    def iterate(self, text, callback):
+        cdef int pos, max_length, min_length, i, I, L, LL, u, U, n, l, j, lvl, REPL_pos = -1
+        cdef bint ok = False, abort
+                          
+        mapping_single = self.mapping_single
+        text = ' ' + text + ' '
+
+        bucket = []
+
+        pos = -1
+        last_char = None
+        last_char2 = None
+        texts = list(text)
+        max_length = len(text) - 1
+
+
+        while pos < max_length:
+            pos += 1
+            c = texts[pos]
+            
+            last_char
+
+            repl_found = False
+
+            i = pos
+            C = c
+            mapping = mapping_single
+            REPL = None
+            #print(i, c, c in mapping)
+            while C in mapping:
+                mapping, repl, regx = mapping[C]
+                #print(C, repl, regx, mapping.keys())
+                if regx:
+                    I = i
+                    sub = None
+                    L = 0
+                    for rs, _repl in regx:
+                        _repl = _repl[0]
+                        i = I + 1
+                        sub = []
+                        C = texts[i]
+                        for mode, compare in rs:
+                            ok = False
+                            #print('::', '[%s]'%mode, C, compare, )
+                            if mode == MODE_CHAR:
+                                if compare == C:
+                                    ok = True
+
+                            else:
+                                if C in compare:
+                                    cont = compare[C]
+                                    ok = True
+                                    LL = 0
+                                    U = 0
+                                    CON = None
+                                    #print('!!', cont, C)
+                                    for con in cont:
+                                        u = i + 1
+                                        if con is None and CON is None:
+                                            CON = C
+                                            U = u
+                                            continue
+                                        for e in con:
+                                            ok = False
+                                            CC = texts[u]
+                                            if CC != e:
+                                                break
+                                            u = u + 1
+                                            ok = True
+                                        if ok:
+                                            l = len(con)
+                                            if CON is None or l > LL:
+                                                CON = C + con
+                                                LL = l
+                                                U = u
+
+                                    if CON:
+                                        #print('>>', CON)
+                                        sub.append(CON)
+                                        i = U - 1
+                                    else:
+                                        sub.append('')
+
+                                elif mode == MODE_ENUM_OPT:
+                                    sub.append('')
+                                    ok = True
+                                    continue
+
+                            #print(sub)
+                            if ok:
+                                i += 1
+                                if i > max_length:
+                                    ok = False
+                                    break
+                                C = texts[i]
+                            else:
+                                break
+
+                        if ok:
+                            for n in range(10):
+                                ss = SUB_SYMBOLS[n]
+                                if ss not in _repl:
+                                    break
+                                _repl = _repl.replace(ss, sub[n])
+                                
+                            if '\\' in _repl:
+                                if SUB_ALL_SYMBOL in _repl:
+                                    _repl = _repl.replace(SUB_ALL_SYMBOL, ','.join(sub))
+
+                            l = len(_repl)
+                            # if l > L:
+                            matched = callback(_repl)
+                            if matched is None:
+                                raise Exception('callback should return True or False')
+                            elif matched == True:
+                                L = l
+                                REPL = _repl
+                                REPL_pos = i - 1
+
+                    if REPL is None:
+                        i = I
+                    else:
+
+                        break
+
+
+
+                if repl is not None:
+                    repl, exceptions_before, exceptions_after = repl
+
+                    abort = False
+
+                    I = i
+
+                    i = i + 1
+                    C = texts[i]
+                    this, end, _regx = exceptions_after
+                    while C in this:
+                        this, end, _regx = this[C]
+                        if end:
+                            abort = True
+                            break
+                        i = pos + 1
+                        if i < 0:
+                            break
+                        C = texts[i]
+
+                    if abort:
+                        i = I + 1
+                        if i > max_length:
+                            break
+                        C = texts[i]
+                        continue
+
+                    i = pos - 1
+                    C = texts[i]
+                    this, end, _regx = exceptions_before
+                    while C in this:
+                        this, end, _regx = this[C]
+                        if end:
+                            abort = True
+                            break
+                        i = pos - 1
+                        if i < 0:
+                            break
+                        C = texts[i]
+
+
+
+                    if abort:
+                        i = I + 1
+                        if i > max_length:
+                            break
+                        C = texts[i]
+                        continue
+                    #print(pos, I)
+                    for j in range(pos, I+1):
+                        C = texts[j]
+                        min_length = I - j + 1  #   [10 ~ 13]
+                        _mapping = mapping_single
+                        lvl = 0
+                        while C in _mapping:
+                            _mapping, _repl, _regx = _mapping[C]
+
+                            # better guess ?
+                            if _regx:
+                                #print(_regx)
+                                pass
+
+                            lvl += 1
+                            if _repl is not None:
+                                if lvl > min_length:
+                                    abort = True
+                                    break
+
+                            j += 1
+                            if j > max_length:
+                                break
+                            C = texts[j]
+
+
+                        if abort:
+                            break
+
+                    if abort:
+                        i = I + 1
+                        if i > max_length:
+                            break
+                        C = texts[i]
+                        continue
+
+
+                    REPL = repl
+                    REPL_pos = I
+
+                    i = I
+
+
+                i += 1
+                if i > max_length:
+                    break
+                C = texts[i]
+
+            if REPL is not None:
+                if '\\0' in REPL:
+                    REPL = REPL.replace('\\0', "".join(texts[pos:REPL_pos+1]))
+                bucket.append(REPL)
+                pos = REPL_pos
+
+                continue
+
+            bucket.append(c)
+            
+        ret = ''.join(bucket)
+            
+        return ret[1:len(ret)-1]
+    
+    
+    # below is just copy haha
+                
     def any_in(self, text):
         cdef int pos, max_length, min_length, i, I, L, LL, u, U, n, l, j, lvl, REPL_pos = -1
         cdef bint ok = False, abort
