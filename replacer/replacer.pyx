@@ -202,7 +202,6 @@ class Replacer():
             mapping = mapping_single
             REPLs = []
             REPL = None
-            REPL_pos = None
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
@@ -448,7 +447,6 @@ class Replacer():
             mapping = mapping_single
             REPLs = []
             REPL = None
-            REPL_pos = None
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
@@ -728,7 +726,6 @@ class Replacer():
             mapping = mapping_single
             REPLs = []
             REPL = None
-            REPL_pos = None
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
