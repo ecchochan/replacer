@@ -105,7 +105,7 @@ class Replacer():
 
                                 bucket.append((MODE_ENUM_OPT if optional else MODE_ENUM, se, is_group))
 
-                    regx = (bucket, v)
+                    z = (bucket, v)
 
                     this = mapping_single
                     for c in temp[:len(temp)-1]:
@@ -547,8 +547,8 @@ class Replacer():
 
                     if REPL is None:
                         i = I
-                    else:
-                        break
+                    # else:
+                    #     break
 
                 if repl is not None:
                     repl, exceptions_before, exceptions_after = repl
