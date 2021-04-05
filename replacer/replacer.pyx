@@ -593,6 +593,9 @@ class Replacer():
                         C = texts[i]
                         continue
                         
+                        
+                        
+                    """
                     for j in range(pos, I+1):
                         C = texts[j]
                         min_length = I - j + 1  #   [10 ~ 13]
@@ -627,6 +630,7 @@ class Replacer():
                             break
                         C = texts[i]
                         continue
+                        """
 
                     print("repl", repl)
                     if REPL is not None:
