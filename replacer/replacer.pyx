@@ -610,7 +610,7 @@ class Replacer():
                             if _repl is not None:
                                 if lvl > min_length:
                                     abort = True
-                                    print("found", repr(_regx), ">>", I)
+                                    print("found", repr(_repl), ">>", I)
                                     break
 
                             j += 1
