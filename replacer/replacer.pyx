@@ -13,7 +13,7 @@ SUB_ALL_SYMBOL = '\\@'
 
 
 cdef sort_tuple_second(x):
-    return -x[1]
+    return x[1]
 
 class Replacer():
     def __init__(self, mapping_wf_exception):
