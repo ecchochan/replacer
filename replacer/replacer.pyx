@@ -544,10 +544,7 @@ class Replacer():
                     if REPL is None:
                         i = I
                     else:
-
                         break
-
-
 
                 if repl is not None:
                     repl, exceptions_before, exceptions_after = repl
@@ -589,15 +586,12 @@ class Replacer():
                             break
                         C = texts[i]
 
-
-
                     if abort:
                         i = I + 1
                         if i > max_length:
                             break
                         C = texts[i]
                         continue
-                        
                         
                     for j in range(pos, I+1):
                         C = texts[j]
@@ -616,14 +610,13 @@ class Replacer():
                             if _repl is not None:
                                 if lvl > min_length:
                                     abort = True
-                                    print("found")
+                                    print("found", repr(_regx), ">>", I)
                                     break
 
                             j += 1
                             if j > max_length:
                                 break
                             C = texts[j]
-
 
                         if abort:
                             break
@@ -635,7 +628,6 @@ class Replacer():
                         C = texts[i]
                         continue
 
-
                     print("repl", repl)
                     if REPL is not None:
                         REPLs.append((REPL, REPL_pos))
@@ -643,7 +635,6 @@ class Replacer():
                     REPL_pos = I
 
                     i = I
-
 
                 i += 1
                 if i > max_length:
