@@ -450,6 +450,7 @@ class Replacer():
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
+                print("parsing", repr(C), "(has repl)" if repl else "", "(has regx)" if regx else "")
                 #print(C, repl, regx, mapping.keys())
                 if regx:
                     I = i
