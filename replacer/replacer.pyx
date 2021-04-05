@@ -11,6 +11,10 @@ cdef int MAX_SUB       = 100
 SUB_SYMBOLS = tuple(['\\%s'%(i+1) for i in range(MAX_SUB)])
 SUB_ALL_SYMBOL = '\\@'
 
+
+cdef sort_tuple_second(x):
+    return x[1]
+
 class Replacer():
     def __init__(self, mapping_wf_exception):
         cdef int i, j, len_splitted
@@ -646,44 +650,28 @@ class Replacer():
                 C = texts[i]
 
             if REPL is not None:
-                matched = callback(REPL, REPLs)
-                if matched is None:
-                    raise Exception('callback should return True or None')
-                elif matched == True:
-                    pass
-                elif matched == False:
-
-                    abort = True
-                    if len(REPLs) > 0:
-                        for j in range(len(REPLs), 0, -1):
-                            REPL, REPL_pos = REPLs[j - 1]
-                            matched = callback(REPL, REPLs)
-                            if matched is None:
-                                raise Exception('callback should return True or None')
-                            elif matched == True:
-                                abort = False
-                                break
-                            elif matched == False:
-                                continue
-                            else:
-                                abort = False
-                                REPL = matched
-                                break
-                                
-                                
-                    if abort:
+                REPLs.append((REPL, REPL_pos))
+                REPLs.sort(key=sort_tuple_second)
+                for j in range(len(REPLs), 0, -1):
+                    REPL, REPL_pos = REPLs[j - 1]
+                    matched = callback(REPL, REPLs)
+                    if matched is None:
+                        raise Exception('callback should return True or None')
+                    elif matched == True:
+                        pass
+                    elif matched == False:
                         bucket.append(c)
-                        continue
-                else:
-                    REPL = matched
-                
-                
-                if '\\0' in REPL:
-                    REPL = REPL.replace('\\0', "".join(texts[pos:REPL_pos+1]))
-                bucket.append(REPL)
-                pos = REPL_pos
+                        break
+                    else:
+                        REPL = matched
 
-                continue
+
+                    if '\\0' in REPL:
+                        REPL = REPL.replace('\\0', "".join(texts[pos:REPL_pos+1]))
+                    bucket.append(REPL)
+                    pos = REPL_pos
+
+                    break
 
             bucket.append(c)
             
