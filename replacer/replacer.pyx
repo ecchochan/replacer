@@ -660,8 +660,7 @@ class Replacer():
                     elif matched == True:
                         pass
                     elif matched == False:
-                        bucket.append(c)
-                        break
+                        continue
                     else:
                         REPL = matched
 
