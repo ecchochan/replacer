@@ -633,6 +633,7 @@ class Replacer():
                         continue
 
 
+                    print("repl", repl)
                     if REPL is not None:
                         REPLs.append((REPL, REPL_pos))
                     REPL = repl
