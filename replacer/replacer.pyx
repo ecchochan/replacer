@@ -545,8 +545,8 @@ class Replacer():
                             REPL_pos = i - 1
                                 
 
-                    if REPL is None:
-                        i = I
+                    # if REPL is None:
+                    i = I
                     # else:
                     #     break
 
