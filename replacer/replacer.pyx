@@ -597,7 +597,8 @@ class Replacer():
                             break
                         C = texts[i]
                         continue
-                    #print(pos, I)
+                        
+                        
                     for j in range(pos, I+1):
                         C = texts[j]
                         min_length = I - j + 1  #   [10 ~ 13]
@@ -615,6 +616,7 @@ class Replacer():
                             if _repl is not None:
                                 if lvl > min_length:
                                     abort = True
+                                    print("found")
                                     break
 
                             j += 1
