@@ -649,6 +649,7 @@ class Replacer():
                     break
                 C = texts[i]
 
+            abort = True
             if REPL is not None:
                 REPLs.append((REPL, REPL_pos))
                 REPLs.sort(key=sort_tuple_second)
@@ -664,14 +665,17 @@ class Replacer():
                     else:
                         REPL = matched
 
-
                     if '\\0' in REPL:
                         REPL = REPL.replace('\\0', "".join(texts[pos:REPL_pos+1]))
                     bucket.append(REPL)
                     pos = REPL_pos
+                    abort = False
 
                     break
-
+                    
+            if not abort:
+                continue
+                    
             bucket.append(c)
             
         ret = ''.join(bucket)
