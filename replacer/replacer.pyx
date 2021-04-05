@@ -294,13 +294,10 @@ class Replacer():
                             REPL = _repl
                             REPL_pos = i - 1
 
-                    if REPL is None:
-                        i = I
-                    else:
-
-                        break
-
-
+                    # if REPL is None:
+                    i = I
+                    # else:
+                    #     break
 
                 if repl is not None:
                     repl, exceptions_before, exceptions_after = repl
@@ -597,8 +594,6 @@ class Replacer():
                         C = texts[i]
                         continue
                         
-                        
-                        
                     """
                     # Why do I have this?
                     for j in range(pos, I+1):
@@ -820,13 +815,10 @@ class Replacer():
                                 REPL = _repl
                                 REPL_pos = i - 1
 
-                    if REPL is None:
-                        i = I
-                    else:
-
-                        break
-
-
+                    # if REPL is None:
+                    i = I
+                    # else:
+                    #     break
 
                 if repl is not None:
                     repl, exceptions_before, exceptions_after = repl
