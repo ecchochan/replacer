@@ -350,7 +350,11 @@ class Replacer():
                             break
                         C = texts[i]
                         continue
-                    #print(pos, I)
+                        
+                        
+                        
+                    """
+                    # Why do I have this?
                     for j in range(pos, I+1):
                         C = texts[j]
                         min_length = I - j + 1  #   [10 ~ 13]
@@ -384,7 +388,7 @@ class Replacer():
                         if i > max_length:
                             break
                         C = texts[i]
-                        continue
+                        continue"""
 
 
                     if REPL is not None:
@@ -450,7 +454,7 @@ class Replacer():
             #print(i, c, c in mapping)
             while C in mapping:
                 mapping, repl, regx = mapping[C]
-                print("parsing", repr(C), "(has repl)" if repl else "", "(has regx)" if regx else "")
+                # print("parsing", repr(C), "(has repl)" if repl else "", "(has regx)" if regx else "")
                 #print(C, repl, regx, mapping.keys())
                 if regx:
                     I = i
@@ -596,6 +600,7 @@ class Replacer():
                         
                         
                     """
+                    # Why do I have this?
                     for j in range(pos, I+1):
                         C = texts[j]
                         min_length = I - j + 1  #   [10 ~ 13]
@@ -632,7 +637,7 @@ class Replacer():
                         continue
                         """
 
-                    print("repl", repl)
+                    # print("repl", repl)
                     if REPL is not None:
                         REPLs.append((REPL, REPL_pos))
                     REPL = repl
@@ -871,7 +876,11 @@ class Replacer():
                             break
                         C = texts[i]
                         continue
-                    #print(pos, I)
+                        
+                        
+                        
+                    """
+                    # Why do I have this?
                     for j in range(pos, I+1):
                         C = texts[j]
                         min_length = I - j + 1  #   [10 ~ 13]
@@ -905,7 +914,7 @@ class Replacer():
                         if i > max_length:
                             break
                         C = texts[i]
-                        continue
+                        continue"""
 
                     if REPL is not None:
                         REPLs.append((REPL, REPL_pos))
