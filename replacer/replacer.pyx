@@ -16,7 +16,7 @@ cdef sort_tuple_second(x):
     return x[1]
 
 class Replacer():
-    def __init__(self, mapping_wf_exception):
+    def __init__(self, mapping_wf_exception, no_re=False):
         cdef int i, j, len_splitted
         cdef bint optional
         
@@ -24,7 +24,7 @@ class Replacer():
 
         for k, v in mapping_wf_exception.items():
             this = mapping_single
-            if re.search(r'\[(.*?)\]', k):
+            if not no_re and re.search(r'\[(.*?)\]', k):
 
                 splitted = re.split(r'\[(.*?)\]', k)
 
