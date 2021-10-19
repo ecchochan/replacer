@@ -1,15 +1,12 @@
 
 from setuptools import setup, find_packages, Extension
 
-try:
-    from Cython.Build import cythonize
+from Cython.Build import cythonize
 
-    ext_modules = cythonize([
-        Extension("replacer.replacer", ["replacer/replacer.pyx"]),
-    ])
-    
-except ImportError:
-    ext_modules = None
+ext_modules = cythonize([
+    Extension("replacer.replacer", ["replacer/replacer.pyx"]),
+])
+
 
 setup(
     name='replacer',
